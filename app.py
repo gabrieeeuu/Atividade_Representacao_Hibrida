@@ -73,9 +73,9 @@ def recomendar_hibrido(user_id, user_course_matrix, df, tfidf_matrix, user_clust
         cluster_id = 0
         return cursos_mais_populares(cluster_id, user_cluster_df, df)
 
-st.title("Recomendador de Cursos Online")
+st.title(":books: Recomendador de Cursos Online")
 
-with st.spinner("Carregando dados..."):
+with st.spinner(":floppy_disk: Carregando dados..."):
     df = carregar_dados()
     tfidf_matrix, tfidf = processar_texto(df)
     user_course_matrix = construir_matriz_usuario_item(df)
@@ -84,9 +84,9 @@ with st.spinner("Carregando dados..."):
     user_cluster_df = pd.DataFrame({'user_id': user_course_matrix.index, 'cluster': user_clusters})
 
 user_ids = user_course_matrix.index.tolist()
-user_id = st.selectbox("Selecione um ID de usuário para recomendar:", user_ids + ['Usuário Novo'])
+user_id = st.selectbox(":bust_in_silhouette: Selecione um ID de usuário para recomendar cursos:", user_ids + ['Usuário Novo'])
 
-if st.button("Recomendar Cursos"):
+if st.button(":mag_right: Recomendar Cursos"):
     if user_id == 'Usuário Novo':
         user_input = 'novo'
     else:
@@ -101,7 +101,7 @@ if st.button("Recomendar Cursos"):
     texto_total = " ".join(textos)
 
     if texto_total.strip():
-      st.subheader("Word Cloud dos Parâmetros de Recomendação")
+      st.subheader(":cloud: Word Cloud dos Parâmetros de Recomendação")
       wordcloud = WordCloud(width=800, height=400, background_color='white').generate(texto_total)
       fig, ax = plt.subplots(figsize=(10, 5))
       ax.imshow(wordcloud, interpolation='bilinear')
@@ -109,14 +109,14 @@ if st.button("Recomendar Cursos"):
       st.pyplot(fig)
 
     if recomendacoes:
-        st.subheader("Cursos Recomendados:")
+        st.subheader(":red_circle: Cursos Recomendados:")
         for cid in recomendacoes:
             curso = df[df['course_id'] == cid].iloc[0]
-            st.markdown(f"**{curso['course_id']}**")
+            st.markdown(f":small_blue_diamond: **{curso['course_id']}**")
             st.markdown(f"_Categoria:_ {curso['category']}")
             st.markdown(f"_Tags:_ {curso['tags']}")
             st.markdown(f"{curso['description'][:200]}...")
             st.markdown("---")
     else:
-        st.warning("Nenhuma recomendação encontrada para este usuário.")
+        st.warning(":four: :zero: :four: Nenhuma recomendação encontrada para este usuário.")
 
